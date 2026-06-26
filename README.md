@@ -4,7 +4,7 @@ Automated data quality and KPI validation framework for banking analytics,
 with AI-assisted test case generation.
 
 ![CI](https://github.com/vinay23is/BankLoan-Analytics-QA/actions/workflows/validate.yml/badge.svg)
-![Python](https://img.shields.io/badge/python-3.11-blue)
+![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![pytest](https://img.shields.io/badge/tested%20with-pytest-green)
 
 ---
@@ -165,8 +165,7 @@ cd BankLoan-Analytics-QA
 # Install
 pip install -r requirements.txt
 
-# Download dataset → place as data/financial_loan.csv
-# (see data/README_dataset.md for sources)
+# Dataset is included in the repo as data/financial_loan.csv — no download needed.
 
 # Run full test suite
 pytest tests/ -v
