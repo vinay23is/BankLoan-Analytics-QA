@@ -1,0 +1,39 @@
+dataset:
+  path: data/financial_loan.csv
+  id_column: id
+
+critical_columns:
+  - loan_amount
+  - funded_amount
+  - int_rate
+  - loan_status
+  - grade
+  - issue_date
+
+validation_rules:
+  int_rate:
+    min: 5.0
+    max: 30.0
+  dti:
+    min: 0.0
+    max: 100.0
+  loan_amount:
+    min: 1.0
+  allowed_loan_status:
+    - Fully Paid
+    - Current
+    - Charged Off
+  allowed_term:
+    - "36 months"
+    - "60 months"
+  allowed_grade:
+    - A
+    - B
+    - C
+    - D
+    - E
+    - F
+    - G
+
+reconciliation:
+  tolerance: 0.01

@@ -1,0 +1,12 @@
+REQ-01: The Bad Loan Rate (NPA proxy) must equal the count of Charged Off loans
+divided by total loan applications, expressed as a percentage rounded to 2 decimal places.
+
+REQ-02: No loan's funded amount should exceed its approved loan amount.
+
+REQ-03: All interest rates must fall between 5% and 30% inclusive for standard
+retail lending products.
+
+REQ-04: Loan grade must be one of A, B, C, D, E, F, or G.
+No other values are permitted in the grade column.
+
+REQ-05: Debt-to-income ratio (dti) must be a non-negative number not exceeding 100.
