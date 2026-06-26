@@ -123,7 +123,7 @@ with tab2:
         return ""
 
     st.dataframe(
-        result_df.style.applymap(colour_status, subset=["Status"]),
+        result_df.style.map(colour_status, subset=["Status"]),
         use_container_width=True,
         hide_index=True,
     )
@@ -157,7 +157,7 @@ with tab3:
     recon_df = pd.DataFrame(rows)
 
     st.dataframe(
-        recon_df.style.applymap(colour_status, subset=["Status"]),
+        recon_df.style.map(colour_status, subset=["Status"]),
         use_container_width=True,
         hide_index=True,
     )
