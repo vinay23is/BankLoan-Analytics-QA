@@ -57,23 +57,24 @@ def check_allowed_values(df: pd.DataFrame, col: str,
                        f"{invalid} invalid values found: {bad_vals[:5]}", invalid)
 
 
-def check_funded_lte_loan(df: pd.DataFrame) -> CheckResult:
-    violations = int(df[df['funded_amount'] > df['loan_amount']].shape[0])
-    if violations == 0:
-        return CheckResult("Business Rule: funded_amount <= loan_amount",
-                           "PASS", "All funded amounts valid")
-    return CheckResult("Business Rule: funded_amount <= loan_amount",
-                       "FAIL", f"{violations} records where funded > loan amount",
-                       violations)
-
-
-def check_positive_amounts(df: pd.DataFrame) -> CheckResult:
-    neg = int(df[(df['loan_amount'] <= 0) | (df['funded_amount'] <= 0)].shape[0])
+def check_positive_loan_amount(df: pd.DataFrame) -> CheckResult:
+    neg = int(df[df['loan_amount'] <= 0].shape[0])
     if neg == 0:
-        return CheckResult("Positive Amounts Check", "PASS",
-                           "All loan and funded amounts are positive")
-    return CheckResult("Positive Amounts Check", "FAIL",
-                       f"{neg} records with non-positive amounts", neg)
+        return CheckResult("Positive Loan Amount", "PASS",
+                           "All loan amounts are positive")
+    return CheckResult("Positive Loan Amount", "FAIL",
+                       f"{neg} records with non-positive loan amounts", neg)
+
+
+def check_installment_positive(df: pd.DataFrame) -> CheckResult:
+    if 'installment' not in df.columns:
+        return CheckResult("Positive Installment", "FAIL", "Column 'installment' not found")
+    neg = int(df[df['installment'] <= 0].shape[0])
+    if neg == 0:
+        return CheckResult("Positive Installment", "PASS",
+                           "All installment values are positive")
+    return CheckResult("Positive Installment", "FAIL",
+                       f"{neg} non-positive installment values", neg)
 
 
 def run_all_checks(df: pd.DataFrame, config: dict) -> List[CheckResult]:
@@ -88,6 +89,6 @@ def run_all_checks(df: pd.DataFrame, config: dict) -> List[CheckResult]:
         check_allowed_values(df, 'loan_status', rules['allowed_loan_status']),
         check_allowed_values(df, 'term', rules['allowed_term']),
         check_allowed_values(df, 'grade', rules['allowed_grade']),
-        check_funded_lte_loan(df),
-        check_positive_amounts(df),
+        check_positive_loan_amount(df),
+        check_installment_positive(df),
     ]

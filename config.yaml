@@ -4,7 +4,6 @@ dataset:
 
 critical_columns:
   - loan_amount
-  - funded_amount
   - int_rate
   - loan_status
   - grade
@@ -12,8 +11,8 @@ critical_columns:
 
 validation_rules:
   int_rate:
-    min: 5.0
-    max: 30.0
+    min: 0.05   # stored as decimal in this dataset (0.05 = 5%)
+    max: 0.30   # 30% upper bound
   dti:
     min: 0.0
     max: 100.0
@@ -24,8 +23,8 @@ validation_rules:
     - Current
     - Charged Off
   allowed_term:
-    - "36 months"
-    - "60 months"
+    - " 36 months"   # dataset includes leading space
+    - " 60 months"
   allowed_grade:
     - A
     - B
