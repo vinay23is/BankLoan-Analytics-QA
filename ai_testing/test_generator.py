@@ -29,7 +29,7 @@ SYSTEM_PROMPT = (
 
 def generate_test(requirement: str, client) -> str:
     msg = client.messages.create(
-        model="claude-haiku-4-5-20251001",
+        model=os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001"),
         max_tokens=400,
         system=SYSTEM_PROMPT,
         messages=[{

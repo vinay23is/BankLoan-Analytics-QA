@@ -1,7 +1,7 @@
 REQ-01: The Bad Loan Rate (NPA proxy) must equal the count of Charged Off loans
 divided by total loan applications, expressed as a percentage rounded to 2 decimal places.
 
-REQ-02: No loan's funded amount should exceed its approved loan amount.
+REQ-02: All loan amounts must be positive values greater than zero.
 
 REQ-03: All interest rates must fall between 5% and 30% inclusive for standard
 retail lending products.

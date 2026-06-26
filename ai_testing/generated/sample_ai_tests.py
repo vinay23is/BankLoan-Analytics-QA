@@ -24,15 +24,14 @@ def test_bad_loan_rate_equals_charged_off_percentage():
     )
 
 
-# Requirement: REQ-02 — Funded amount must not exceed loan amount
-def test_funded_amount_never_exceeds_loan_amount():
+# Requirement: REQ-02 — All loan amounts must be positive values greater than zero
+def test_loan_amount_is_positive():
     df = pd.DataFrame({
-        'loan_amount':   [10000, 15000, 20000],
-        'funded_amount': [9500,  15000, 19000],
+        'loan_amount': [10000, 15000, 20000],
     })
-    violations = df[df['funded_amount'] > df['loan_amount']]
-    assert len(violations) == 0, (
-        f"{len(violations)} records where funded_amount > loan_amount"
+    non_positive = df[df['loan_amount'] <= 0]
+    assert len(non_positive) == 0, (
+        f"{len(non_positive)} records with non-positive loan_amount"
     )
 
 

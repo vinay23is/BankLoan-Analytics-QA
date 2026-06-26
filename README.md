@@ -29,7 +29,7 @@ using AI.
 | Layer | Tool | What it validates |
 |---|---|---|
 | **Data Quality** | pandas + pytest | Nulls, duplicates, range checks, allowed values |
-| **Business Rules** | pytest | Funded ≤ loan amount, valid status/grade/term, positive amounts |
+| **Business Rules** | pytest | Valid status/grade/term, positive loan amounts, valid interest/DTI ranges |
 | **KPI Reconciliation** | pandas + SQLite | pandas-computed KPIs vs SQL-computed KPIs |
 | **AI Test Generation** | Claude API | Plain-text requirements → pytest test outlines |
 | **Test Report** | Python + Markdown | Data quality score, KPI table, pass/fail summary |
@@ -44,8 +44,8 @@ used in banking analytics projects.
 
 **Download:** See [`data/README_dataset.md`](data/README_dataset.md) for sources.
 
-**Key fields:** `id`, `loan_amount`, `funded_amount`, `int_rate`, `loan_status`
-(Fully Paid / Current / Charged Off), `grade`, `term`, `dti`, `annual_income`
+**Key fields:** `id`, `loan_amount`, `int_rate`, `loan_status`
+(Fully Paid / Current / Charged Off), `grade`, `term`, `dti`, `annual_income`, `installment`
 
 ---
 
@@ -104,8 +104,8 @@ financial_loan.csv
 | Good Loan Rate (%) | (Fully Paid + Current) / Total × 100 |
 | Bad Loan Rate / NPA Proxy (%) | Charged Off / Total × 100 |
 | Average Interest Rate | mean(int_rate) |
-| Average Funded Amount | mean(funded_amount) |
-| Total Capital Deployed | sum(funded_amount) |
+| Average Loan Amount | mean(loan_amount) |
+| Total Loan Amount | sum(loan_amount) |
 | Total Loan Applications | COUNT(*) |
 
 ---
@@ -149,9 +149,8 @@ See [`reports/sample_report.md`](reports/sample_report.md) for a full example
 (generated after downloading the dataset).
 
 ```
-Data Quality Score:    94/100  (8/9 checks passed)
+Data Quality Score:    100/100  (9/9 checks passed)
 KPI Reconciliation:    6/6 KPIs matched within tolerance
-Business Rules:        9/9 passed
 ```
 
 ---
@@ -160,7 +159,7 @@ Business Rules:        9/9 passed
 
 ```bash
 # Clone
-git clone https://github.com/YOUR_USERNAME/BankLoan-Analytics-QA
+git clone https://github.com/vinay23is/BankLoan-Analytics-QA
 cd BankLoan-Analytics-QA
 
 # Install

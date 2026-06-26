@@ -12,8 +12,11 @@ class CheckResult:
 
 
 def check_nulls(df: pd.DataFrame, critical_cols: List[str]) -> CheckResult:
-    present = [c for c in critical_cols if c in df.columns]
-    nulls = df[present].isnull().sum()
+    missing = [c for c in critical_cols if c not in df.columns]
+    if missing:
+        return CheckResult("Null Check", "FAIL",
+                           f"Missing critical columns: {missing}", len(missing))
+    nulls = df[critical_cols].isnull().sum()
     null_cols = nulls[nulls > 0]
     if null_cols.empty:
         return CheckResult("Null Check", "PASS", "No nulls in critical columns")

@@ -5,6 +5,9 @@ This prevents silent regressions when upstream data transforms change.
 
 Note: int_rate in this dataset is stored as a decimal (0.1527 = 15.27%).
 """
+import yaml
+from pathlib import Path
+
 import pandas as pd
 import pytest
 
@@ -71,3 +74,27 @@ def test_loan_amount_positive(clean_loans):
 def test_no_duplicate_loan_ids(clean_loans):
     dupes = clean_loans['id'].duplicated().sum()
     assert dupes == 0, f"{dupes} duplicate loan IDs found"
+
+
+# ── Integration test: validate the committed dataset ────────────────────────
+
+def test_committed_dataset_passes_all_quality_rules():
+    """Runs run_all_checks() against the real CSV committed to the repo.
+
+    This proves the rules hold on actual data, not just synthetic fixtures.
+    Skipped automatically if the dataset file is absent (e.g. in CI without data).
+    """
+    from validation.data_quality import run_all_checks
+
+    config_path = Path("config.yaml")
+    if not config_path.exists():
+        pytest.skip("config.yaml not found — run from project root")
+
+    config    = yaml.safe_load(config_path.read_text())
+    data_path = Path(config["dataset"]["path"])
+    if not data_path.exists():
+        pytest.skip(f"Dataset not found at {data_path}")
+
+    df       = pd.read_csv(data_path)
+    failures = [r for r in run_all_checks(df, config) if r.status == "FAIL"]
+    assert not failures, [f"{r.check_name}: {r.details}" for r in failures]
